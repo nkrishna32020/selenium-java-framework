@@ -49,7 +49,10 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(){
-        getDriver().quit();
-        driver.remove();
+        if (getDriver() != null) {
+            getDriver().quit();
+            driver.remove();
+        }
+        
     }
 }
