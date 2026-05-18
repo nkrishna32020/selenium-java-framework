@@ -1,37 +1,35 @@
 name: Selenium Tests
 
 on:
-push:
-branches:
-  - main
+  push:
+    branches:
+      - main
 
 jobs:
-test:
+  test:
+    runs-on: ubuntu-latest
 
-runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
 
-  - name: Set up Java
-    uses: actions/setup-java@v4
-    with:
-      distribution: 'temurin'
-      java-version: '11'
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
 
-  - name: Install Chrome
-    uses: browser-actions/setup-chrome@v1
+      - name: Run Tests
+        run: mvn clean test
 
-  - name: Run Tests
-    run: mvn clean test
-
-  - name: Upload Test Reports
-    uses: actions/upload-artifact@v4
-    if: always()
-    with:
-      name: test-reports
-      path: |
-        reports
-        screenshots
-
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports
+          path: |
+            reports
+            screenshots
