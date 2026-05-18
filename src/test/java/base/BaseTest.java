@@ -12,17 +12,19 @@ import java.net.URL;
 public class BaseTest {
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     @BeforeMethod(alwaysRun = true)
-    public void setup() throws Exception{
+    public void setup() throws Exception {
         ConfigReader config = new ConfigReader();
-        //driver = new ChromeDriver();
-        //driver.set(new ChromeDriver());
+
         String executionMode =
                 config.getProperty("executionMode");
 
-        if (executionMode.equalsIgnoreCase("remote")) {
+        ChromeOptions options = new ChromeOptions();
 
-            ChromeOptions options =
-                    new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        if (executionMode.equalsIgnoreCase("remote")) {
 
             driver.set(
                     new RemoteWebDriver(
@@ -33,14 +35,13 @@ public class BaseTest {
 
         } else {
 
-            driver.set(new ChromeDriver());
+            driver.set(new ChromeDriver(options));
         }
-        //driver.manage().window().maximize();
+
         getDriver().manage().window().maximize();
         getDriver().get(config.getProperty("baseUrl"));
-        //driver.get("https://www.saucedemo.com/");
-        //driver.get(config.getProperty("baseUrl"));
     }
+
 
     public WebDriver getDriver() {
 
@@ -53,6 +54,6 @@ public class BaseTest {
             getDriver().quit();
             driver.remove();
         }
-        
+
     }
 }
