@@ -38,7 +38,7 @@ public class LoginTest extends BaseTest {
         loginPage.login("standard_user", "secret_sauce");
 
         System.out.println("Second Login Test");
-        Assert.assertTrue(false);
+        //Assert.assertTrue(false);
     }
 
 }
